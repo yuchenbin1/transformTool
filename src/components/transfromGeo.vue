@@ -19,6 +19,7 @@
               :value="item.value">
             </el-option>
           </el-select>
+          <div class="pre-button" @click="handleFormat(1)">json格式化</div>
         </div>
         <pre class="editor" id="editor1"></pre>
       </div>
@@ -33,6 +34,7 @@
               :value="item.value">
             </el-option>
           </el-select>
+          <div class="pre-button" @click="handleFormat(2)">json格式化</div>
         </div>
         <pre class="editor" id="editor2"></pre>
       </div>
@@ -86,6 +88,13 @@ export default {
     editor2 = ace.edit('editor2')
   },
   methods: {
+    handleFormat (num) {
+      if (num === 1 && editor1.getValue()) {
+        editor1.setValue(JSON.stringify(JSON.parse(editor1.getValue()), null, 2))
+      } else if (num === 2 && editor2.getValue()) {
+        editor2.setValue(JSON.stringify(JSON.parse(editor2.getValue()), null, 2))
+      }
+    },
     handleClickButton () {
       console.log(dialog, 'dialog')
       dialog.showOpenDialog({ properties: ['openFile'] }).then(res => {
@@ -197,6 +206,14 @@ export default {
       .editor{
         width:500px;
         height:600px;
+      }
+      .pre-button{
+        width: 100px;
+        height:30px;
+        line-height:30px;
+        border-radius: 4px;
+        border:1px solid #ccc;
+        margin:10px auto;
       }
     }
   }
