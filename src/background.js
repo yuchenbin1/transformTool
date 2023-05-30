@@ -4,6 +4,12 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import * as remoteMain from '@electron/remote/main'
+// const { app, protocol, BrowserWindow } = require('electron')
+// const { createProtocol } = require('vue-cli-plugin-electron-builder/lib')
+// const installExtension = require('electron-devtools-installer')
+// const { VUEJS_DEVTOOLS } = require('electron-devtools-installer')
+// const remoteMain = require('@electron/remote/main')
+
 remoteMain.initialize()
 const isDevelopment = process.env.NODE_ENV !== 'production'
 

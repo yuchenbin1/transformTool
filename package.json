@@ -1,16 +1,23 @@
 {
-  "name": "my-project",
+  "name": "tranformtool",
   "version": "0.1.0",
   "private": true,
+  "authors": "yuchenbin",
+  "description": "a coordinate conversion tool",
+
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
+    "build:win": " electron-packager . tranformTool  vue-objccn --platform=win32 --out ./dist/$npm_package_version --overwrite  --ignore=node_modules/* --ignore=.git --ignore=dist/$npm_package_version --no-prune",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "start": "npm run lint && npm run electron:serve"
+    "dev": "npm run lint && npm run electron:serve",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "main": "background.js",
   "dependencies": {
@@ -18,6 +25,7 @@
     "ace-builds": "^1.22.0",
     "core-js": "^3.8.3",
     "electron": "^24.4.0",
+    "electron-squirrel-startup": "^1.0.0",
     "element-ui": "^2.15.13",
     "gcoord": "^1.0.5",
     "vue": "^2.6.14",
@@ -27,6 +35,11 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",

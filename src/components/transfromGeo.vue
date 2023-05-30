@@ -44,11 +44,12 @@
 </template>
 
 <script>
-import gcoord from 'gcoord'
-import ace from 'ace-builds'
+// import gcoord from 'gcoord'
+const gcoord = require('gcoord').default
+// import ace from 'ace-builds'
+const ace = require('ace-builds').default
 const fs = require('fs')
 const remote = require('@electron/remote')
-// const electron = require('electron')
 const { dialog } = remote
 
 let editor1 = null
@@ -96,9 +97,7 @@ export default {
       }
     },
     handleClickButton () {
-      console.log(dialog, 'dialog')
       dialog.showOpenDialog({ properties: ['openFile'] }).then(res => {
-        console.log(res)
         // 读取的文件路径赋值
         // filePath.value = res.filePaths[0];
         if (res && res.filePaths[0]) {
@@ -111,9 +110,8 @@ export default {
     readFileContent (filePath) {
       fs.readFile(filePath, { encoding: 'utf-8' }, (err, result) => {
         if (err) {
-          console.log(err, '读取文件内容失败')
+          dialog.showErrorBox(err, '读取文件内容失败')
         } else {
-          console.log(result, 'result')
           editor1.setValue(result)
           // this.transform(result)
           // this.fileContent.value = result;
@@ -134,17 +132,21 @@ export default {
         })
         return
       }
-      const data = JSON.parse(JSON.stringify(geojson))
       try {
-        gcoord.transform(data, gcoord.WGS84, gcoord.GCJ02)
-        editor2.setValue(data)
+        const data = JSON.parse(geojson.toString())
+        console.log(data, 'data')
+        gcoord.transform(data, gcoord[this.value1], gcoord[this.value2])
+        console.log(data, 'data')
+
+        console.log(JSON.stringify(data))
+
+        editor2.setValue(JSON.stringify(data))
       } catch (err) {
         dialog.showErrorBox('错误', '转化错误，请检查文件格式是否正确')
       }
     },
     handleClickTransform () {
       const value = editor1.getValue()
-      console.log(value, 'value')
       this.transform(value)
     },
     handleClickClear () {
@@ -155,13 +157,16 @@ export default {
       dialog.showSaveDialog({
         title: '保存转化后的文件',
         properties: ['showHiddenFiles'],
-        filters: [{ name: '转化后的geojson', extensions: ['json'] }],
+        filters: [{ name: 'geojson', extensions: ['json'] }],
         message: editor2.getValue()
       }).then(res => {
-        console.log(res, 'res')
         if (res && res.filePath) {
           try {
             fs.writeFileSync(res.filePath, editor2.getValue())
+            dialog.showMessageBox({
+              title: '下载成功',
+              message: '下载成功'
+            })
           } catch (err) {
             console.error(err)
           }
@@ -214,6 +219,7 @@ export default {
         border-radius: 4px;
         border:1px solid #ccc;
         margin:10px auto;
+        cursor: pointer;
       }
     }
   }
